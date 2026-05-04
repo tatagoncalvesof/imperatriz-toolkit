@@ -1,0 +1,12 @@
+{
+  "name": "imperatriz-toolkit",
+  "description": "Toolkit proprietário da Tata Goncalves: 6 skills de copy, headline, mecanismo único, briefing, análise de anúncios e stories — frameworks Schwartz + Bencivenga + Russell Brunson + adaptação Brasil.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Tata Goncalves",
+    "url": "https://mentoriaimperioia.com"
+  },
+  "homepage": "https://github.com/tatagoncalvesof/imperatriz-toolkit",
+  "repository": "github:tatagoncalvesof/imperatriz-toolkit",
+  "license": "MIT"
+}
