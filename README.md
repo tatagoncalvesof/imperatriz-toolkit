@@ -17,14 +17,21 @@ Toolkit proprietário da [Tata Goncalves](https://mentoriaimperioia.com) — 6 s
 
 ## Instalação
 
-No Claude Code, dentro de qualquer projeto:
+### Opção 1 — Terminal (CLI)
 
 ```bash
-/plugin marketplace add tatagoncalvesof/imperatriz-toolkit
-/plugin install imperatriz-toolkit@tatagoncalvesof-imperatriz-toolkit
+claude plugin marketplace add tatagoncalvesof/imperatriz-toolkit
+claude plugin install imperatriz-toolkit@imperatriz-toolkit
 ```
 
-Reinicia ou roda `/reload-plugins` e usa as skills com namespace:
+### Opção 2 — Dentro do Claude Code (slash commands)
+
+```
+/plugin marketplace add tatagoncalvesof/imperatriz-toolkit
+/plugin install imperatriz-toolkit@imperatriz-toolkit
+```
+
+Reinicia o Claude Code e usa as skills com namespace:
 
 ```bash
 /imperatriz-toolkit:briefing-copy-360
