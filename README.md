@@ -17,52 +17,75 @@ Toolkit proprietário da [Tata Goncalves](https://mentoriaimperioia.com) — 6 s
 
 ## Instalação
 
-### Opção 1 — Terminal (CLI)
+### Mac / Linux
+
+Copia e cola no terminal:
 
 ```bash
-claude plugin marketplace add tatagoncalvesof/imperatriz-toolkit
-claude plugin install imperatriz-toolkit@imperatriz-toolkit
+git clone https://github.com/tatagoncalvesof/imperatriz-toolkit ~/imperatriz-toolkit && cd ~/imperatriz-toolkit && bash install.sh
 ```
 
-### Opção 2 — Dentro do Claude Code (slash commands)
+### Windows (PowerShell)
 
-```
-/plugin marketplace add tatagoncalvesof/imperatriz-toolkit
-/plugin install imperatriz-toolkit@imperatriz-toolkit
+```powershell
+git clone https://github.com/tatagoncalvesof/imperatriz-toolkit $HOME\imperatriz-toolkit
+cd $HOME\imperatriz-toolkit
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-Reinicia o Claude Code e usa as skills com namespace:
+### Instalação manual (qualquer sistema)
+
+Se preferir copiar à mão:
 
 ```bash
-/imperatriz-toolkit:briefing-copy-360
-/imperatriz-toolkit:mecanismo-unico
-/imperatriz-toolkit:headline-imperatriz
-/imperatriz-toolkit:texto-em-visual
-/imperatriz-toolkit:analise-anuncio-1000
-/imperatriz-toolkit:stories-pergunta-resposta
+git clone https://github.com/tatagoncalvesof/imperatriz-toolkit
+cp -R imperatriz-toolkit/skills/* ~/.claude/skills/
+```
+
+No Windows:
+```powershell
+git clone https://github.com/tatagoncalvesof/imperatriz-toolkit
+Copy-Item -Path imperatriz-toolkit\skills\* -Destination $HOME\.claude\skills\ -Recurse
+```
+
+## Uso
+
+Abre o Claude Code em qualquer projeto e roda:
+
+```
+/briefing-copy-360
+/mecanismo-unico
+/headline-imperatriz
+/texto-em-visual
+/analise-anuncio-1000
+/stories-pergunta-resposta
 ```
 
 ## Atualização
 
+Pra pegar as últimas versões das skills:
+
 ```bash
-/plugin update imperatriz-toolkit
+cd ~/imperatriz-toolkit
+git pull
+bash install.sh    # ou .\install.ps1 no Windows
 ```
 
 ## Pré-requisitos
 
-- Claude Code instalado (`claude` no terminal)
-- Conta Claude ativa
+- [Claude Code](https://claude.com/claude-code) instalado (`claude` no terminal)
+- `git` instalado
 - Algumas skills usam Python 3 e ferramentas externas (Midjourney, Ideogram, Gemini) — leia o `SKILL.md` de cada uma
 
 ## Fluxo recomendado
 
 ```
-1. /imperatriz-toolkit:briefing-copy-360       (extrai contexto)
-2. /imperatriz-toolkit:mecanismo-unico         (constrói o mecanismo)
-3. /imperatriz-toolkit:headline-imperatriz     (gera headlines)
-4. /imperatriz-toolkit:texto-em-visual         (transforma em visual)
-5. /imperatriz-toolkit:analise-anuncio-1000    (revisa contra 17 camadas)
-6. /imperatriz-toolkit:stories-pergunta-resposta (gera Q&A pra Instagram)
+1. /briefing-copy-360         (extrai contexto)
+2. /mecanismo-unico           (constrói o mecanismo)
+3. /headline-imperatriz       (gera headlines)
+4. /texto-em-visual           (transforma em visual)
+5. /analise-anuncio-1000      (revisa contra 17 camadas)
+6. /stories-pergunta-resposta (gera Q&A pra Instagram)
 ```
 
 ## Licença
