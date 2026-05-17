@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.env.*
+node_modules/
+*.log
+__pycache__/
+.venv/
+# Large video assets — host externally
+assets/*.mp4
+assets/*.mov
+assets/*.avi
+assets/*.mkv
