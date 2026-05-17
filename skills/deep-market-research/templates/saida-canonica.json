@@ -1,0 +1,203 @@
+{
+  "$schema": "deep-market-research-v1",
+  "metadata": {
+    "executed_at": "YYYY-MM-DD",
+    "executed_by": "deep-market-research v1",
+    "nicho": "{{NICHO}}",
+    "nicho_slug": "{{NICHO_SLUG}}",
+    "produto": "{{PRODUTO}}",
+    "cliente_ideal": "{{CLIENTE_IDEAL_1_FRASE}}",
+    "ticket": "ate_97 | 97_997 | 997_5k | 5k_mais",
+    "schwartz_dominante": "inconsciente | consciente_dor | consciente_solucao | consciente_produto | mais_consciente",
+    "padc_dominante": "preco | autoridade | duvida_pessoal | condicao",
+    "geografia": "{{GEOGRAFIA}}",
+    "idioma_interno": "{{IDIOMA}}",
+    "plataformas_pesquisadas": ["google", "youtube", "tiktok", "instagram", "linkedin"],
+    "plataforma_top": "{{PLATAFORMA_TOP}}",
+    "queries_totais_executadas": 0,
+    "tempo_execucao_total": "Xh",
+    "modo_executado": "full | rapido | canal=X | auditar | atualizar"
+  },
+  "termos_top_50": [
+    {
+      "id": 1,
+      "termo_exato": "{{TERMO_EXATO_LITERAL}}",
+      "plataforma_origem": ["google", "youtube"],
+      "frequencia": 18,
+      "schwartz": "consciente_solucao",
+      "score_oportunidade": 9,
+      "score_racional": "Aparece em 18 fontes, objeção é PADC-Dúvida (fácil quebrar), autocomplete denso",
+      "contexto_dominante": "dor | desejo | comparacao | celebracao | duvida"
+    }
+  ],
+  "expressoes_idiomaticas": [
+    {
+      "id": 1,
+      "expressao": "{{EXPRESSAO_LITERAL}}",
+      "fonte": {
+        "plataforma": "tiktok",
+        "tipo": "comentario",
+        "url": "https://...",
+        "data": "YYYY-MM-DD"
+      }
+    }
+  ],
+  "metaforas": [
+    {
+      "id": 1,
+      "metafora": "{{METAFORA_LITERAL}}",
+      "interpretacao": "{{O_QUE_SIGNIFICA}}",
+      "frequencia": 4
+    }
+  ],
+  "anti_termos": [
+    {
+      "id": 1,
+      "termo": "{{ANTI_TERMO}}",
+      "razao": "{{POR_QUE_PUBLICO_REJEITA}}",
+      "evidencia": "{{ONDE_VIU_REJEICAO}}"
+    }
+  ],
+  "objecoes": [
+    {
+      "id": 1,
+      "termo_mae_id": 1,
+      "termo_mae": "{{TERMO_LITERAL}}",
+      "ranking_objecao": 1,
+      "objecao_resumida": "{{LABEL_CURTO}}",
+      "eixo": "preco | autoridade | duvida_pessoal | condicao",
+      "sub_categoria": "custo_escondido | custo_absoluto | custo_oportunidade | falta_prova | capacidade | demografia | tempo | pre_requisito",
+      "frase_origem": "{{CITACAO_LITERAL}}",
+      "fonte": {
+        "plataforma": "youtube",
+        "tipo": "comentario",
+        "url": "https://...",
+        "data": "YYYY-MM-DD"
+      },
+      "semente_quebra": "{{DIRECAO_DE_COPY_PRA_QUEBRAR}}"
+    }
+  ],
+  "ideias_conteudo": [
+    {
+      "id": 1,
+      "termo_mae_id": 1,
+      "termo_mae": "{{TERMO_LITERAL}}",
+      "objecao_atacada_id": 2,
+      "objecao_atacada_eixo": "duvida_pessoal",
+      "formato": "reel | carrossel | post_li | yt_longo | story_seq | post_texto",
+      "duracao_estimada_s": 60,
+      "hook": "{{HOOK_LITERAL_USANDO_TERMO}}",
+      "valor": "{{DESCRICAO_VALOR_ENTREGUE}}",
+      "ponte": "{{CONEXAO_COM_PRODUTO_SEM_PITCH}}",
+      "cta": "{{CTA_ESPECIFICO}}",
+      "plataforma_principal": "instagram",
+      "temperatura_publico": "frio | morno | quente"
+    }
+  ],
+  "distribuicao_padc": {
+    "preco_pct": 22,
+    "autoridade_pct": 15,
+    "duvida_pessoal_pct": 48,
+    "condicao_pct": 15,
+    "leitura": "Público está em bloqueio de identidade. Copy precisa atacar 'você consegue, é pra você' antes de qualquer outra coisa."
+  },
+  "distribuicao_formatos": {
+    "reel": 15,
+    "carrossel": 12,
+    "post_li": 8,
+    "yt_longo": 5,
+    "story_seq": 5,
+    "post_texto": 5
+  },
+  "recortes_por_plataforma": {
+    "google": {
+      "queries_executadas": 12,
+      "termos_capturados_aqui": 18,
+      "objecoes_aqui": 22,
+      "arquivo": "recorte-google.md"
+    },
+    "youtube": {
+      "queries_executadas": 10,
+      "termos_capturados_aqui": 24,
+      "objecoes_aqui": 35,
+      "comentarios_minerados": 90,
+      "arquivo": "recorte-youtube.md"
+    },
+    "tiktok": {
+      "queries_executadas": 8,
+      "termos_capturados_aqui": 14,
+      "objecoes_aqui": 18,
+      "hashtags_cluster": ["#exemplo1", "#exemplo2"],
+      "arquivo": "recorte-tiktok.md"
+    },
+    "instagram": {
+      "queries_executadas": 10,
+      "termos_capturados_aqui": 16,
+      "objecoes_aqui": 24,
+      "criadores_referencia": ["@exemplo1", "@exemplo2"],
+      "arquivo": "recorte-instagram.md"
+    },
+    "linkedin": {
+      "queries_executadas": 7,
+      "termos_capturados_aqui": 8,
+      "objecoes_aqui": 12,
+      "arquivo": "recorte-linkedin.md"
+    }
+  },
+  "fontes": [
+    {
+      "id": 1,
+      "url": "https://...",
+      "tipo": "video | post | comentario | autocomplete | paa | reel | reclame_aqui | reddit",
+      "plataforma": "youtube",
+      "consultado_em": "YYYY-MM-DD",
+      "termos_extraidos": [1, 7, 23],
+      "objecoes_extraidas": [3, 18]
+    }
+  ],
+  "validacao_anti_slop": {
+    "v1_termos_literais": true,
+    "v2_objecoes_com_origem": true,
+    "v3_plataformas_min_3": true,
+    "v4_sem_abstracoes": true,
+    "v5_sugestoes_especificas": true,
+    "v6_pontes_variadas": true,
+    "v7_scores_com_racional": true,
+    "v8_registro_coerente": true,
+    "v9_anti_termos_listados": true,
+    "v10_passou_voz_humana": true,
+    "validado_em": "YYYY-MM-DD"
+  },
+  "proximas_skills_sugeridas": [
+    {
+      "skill": "/skill-persona-profunda",
+      "input": "saida-canonica.json",
+      "razao": "Persona com linguagem real do JSON, não inventada"
+    },
+    {
+      "skill": "/mecanismo-unico",
+      "input": "saida-canonica.json campo 'objecoes'",
+      "razao": "Vilão externo do mecanismo deve ser o que aparece nas objeções"
+    },
+    {
+      "skill": "/calendario-imperatriz",
+      "input": "saida-canonica.json campo 'ideias_conteudo'",
+      "razao": "50 ideias viram pauta de 30-60 dias"
+    },
+    {
+      "skill": "/linha-editorial-imperatriz",
+      "input": "saida-canonica.json campos 'anti_termos' + 'expressoes_idiomaticas'",
+      "razao": "Vocabulário ON/OFF baseado em dados reais"
+    },
+    {
+      "skill": "/headline-imperatriz",
+      "input": "top 10 termos por temperatura",
+      "razao": "Hooks com palavras-EXATAS validadas no mercado"
+    },
+    {
+      "skill": "/copy-conversacional-dm",
+      "input": "saida-canonica.json campo 'objecoes'",
+      "razao": "Banco de objeções vira roteiro de quebra em DM"
+    }
+  ]
+}

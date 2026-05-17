@@ -7,7 +7,7 @@ $SkillsDir = Join-Path $HOME ".claude\skills"
 $RepoDir = $PSScriptRoot
 
 Write-Host ""
-Write-Host "👑 Imperatriz Toolkit — instalando 6 skills no Claude Code" -ForegroundColor Magenta
+Write-Host "👑 Imperatriz Toolkit — instalando 13 skills no Claude Code" -ForegroundColor Magenta
 Write-Host ""
 
 if (-not (Test-Path $SkillsDir)) {
@@ -44,10 +44,12 @@ Write-Host ""
 Write-Host "🎉 Concluído: $Installed instalada(s), $Skipped pulada(s)" -ForegroundColor Magenta
 Write-Host ""
 Write-Host "Abre o Claude Code e usa as skills:"
-Write-Host "  /briefing-copy-360"
-Write-Host "  /mecanismo-unico"
-Write-Host "  /headline-imperatriz"
-Write-Host "  /texto-em-visual"
-Write-Host "  /analise-anuncio-1000"
-Write-Host "  /stories-pergunta-resposta"
+Write-Host ""
+Write-Host "  COPY:        /briefing-copy-360  /mecanismo-unico  /headline-imperatriz"
+Write-Host "  VISUAL:      /texto-em-visual  /mapa-mental-imperatriz"
+Write-Host "  ANÁLISE:     /analise-anuncio-1000"
+Write-Host "  ESTRATÉGIA:  /maestro-de-conteudo  /linha-editorial-imperatriz  /calendario-imperatriz"
+Write-Host "  CONTEÚDO:    /linkedin-empire  /stories-pergunta-resposta"
+Write-Host "  PESQUISA:    /deep-market-research"
+Write-Host "  REUNIÃO:     /reuniao-de-resultado"
 Write-Host ""

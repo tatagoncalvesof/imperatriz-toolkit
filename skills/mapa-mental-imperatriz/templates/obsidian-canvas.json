@@ -1,0 +1,67 @@
+{
+  "_comentario": "Template Obsidian Canvas — formato JSON oficial do .canvas. Usar como base pra geração programática.",
+  "_documentacao": "https://github.com/obsidianmd/obsidian-api/blob/master/canvas.d.ts",
+  "_estrutura_base": {
+    "nodes": [
+      {
+        "id": "root",
+        "type": "text",
+        "x": 0,
+        "y": 0,
+        "width": 250,
+        "height": 100,
+        "text": "# Tema Central",
+        "color": "6"
+      },
+      {
+        "id": "ramo-1",
+        "type": "text",
+        "x": 400,
+        "y": -200,
+        "width": 200,
+        "height": 80,
+        "text": "Ramo 1",
+        "color": "1"
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "fromNode": "root",
+        "fromSide": "right",
+        "toNode": "ramo-1",
+        "toSide": "left",
+        "color": "1"
+      }
+    ]
+  },
+  "_paleta_cores_obsidian": {
+    "1": "#e74c3c — vermelho (problema/dor)",
+    "2": "#f39c12 — laranja (atenção)",
+    "3": "#f1c40f — amarelo (oportunidade)",
+    "4": "#2ecc71 — verde (resultado/positivo)",
+    "5": "#3498db — azul (informação/dados)",
+    "6": "#9b59b6 — roxo (Imperatriz/centro)",
+    "7": "#1abc9c — turquesa (ação)"
+  },
+  "_layout_radial_recomendado": {
+    "root": "0,0 (centro)",
+    "nivel_1_distancia_horizontal": "400px do centro",
+    "nivel_1_espacamento_vertical": "180px entre nós",
+    "nivel_2_distancia_adicional": "300px do pai",
+    "nivel_2_espacamento_vertical": "120px entre irmaos",
+    "alternancia": "metade dos ramos pra direita (x positivo), metade pra esquerda (x negativo)"
+  },
+  "_dimensoes_padrao": {
+    "root": {"width": 250, "height": 100},
+    "nivel_1": {"width": 220, "height": 90},
+    "nivel_2": {"width": 200, "height": 70},
+    "nivel_3": {"width": 180, "height": 60}
+  },
+  "_cor_por_nivel": {
+    "root": "6 (roxo Imperatriz)",
+    "nivel_1": "rotação: 1, 4, 5, 7, 2, 3 (uma cor por ramo)",
+    "nivel_2": "herda do nível 1",
+    "nivel_3": "herda do nível 1"
+  }
+}

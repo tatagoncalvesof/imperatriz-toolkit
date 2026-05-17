@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reunião de Resultado — {{NEGOCIO}}</title>
+<style>
+  :root {
+    --bg: #0e0c0a;
+    --bg-soft: #1a1612;
+    --bg-card: #221d18;
+    --ink: #f4ecdc;
+    --ink-soft: #c8b89a;
+    --ink-dim: #8a7d68;
+    --gold: #c79e5a;
+    --gold-soft: #e8c994;
+    --green: #6f9b6e;
+    --yellow: #d4a838;
+    --red: #b85a4f;
+    --line: #3a3127;
+    --serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 48px 32px 32px;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  h1 em { color: var(--gold); font-style: italic; }
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 640px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .meta-item .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+  .meta-item .value {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--ink);
+  }
+  nav.tabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 0 32px;
+  }
+  .tabs-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 18px 20px;
+    background: transparent;
+    color: var(--ink-soft);
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  main { max-width: 1200px; margin: 0 auto; padding: 48px 32px 96px; }
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade 0.3s; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .panel-intro {
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 32px 0 12px;
+    color: var(--gold-soft);
+  }
+  h4 {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; color: var(--ink-soft); }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-gold {
+    border-left: 3px solid var(--gold);
+  }
+  .card-red {
+    border-left: 3px solid var(--red);
+  }
+  .card-green {
+    border-left: 3px solid var(--green);
+  }
+  ul { padding-left: 20px; margin-bottom: 16px; }
+  li { color: var(--ink-soft); margin-bottom: 6px; }
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .check:hover { background: var(--bg-soft); }
+  .check input[type=checkbox] {
+    margin-top: 4px;
+    accent-color: var(--gold);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  .check-label { flex: 1; }
+  .check-label strong { color: var(--ink); display: block; margin-bottom: 4px; }
+  .score-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-radius: 4px;
+  }
+  .score-box .score-num {
+    font-family: var(--serif);
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  th {
+    background: var(--bg-soft);
+    color: var(--gold);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  td { color: var(--ink-soft); }
+  td strong { color: var(--ink); }
+  .copy-block {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    margin: 16px 0;
+  }
+  .copy-block pre {
+    white-space: pre-wrap;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--green); color: var(--ink); }
+  blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 12px 20px;
+    margin: 16px 0;
+    background: var(--bg-soft);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    font-style: italic;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; }
+    .meta-row { gap: 16px; }
+  }
+  .timer {
+    background: var(--bg-soft);
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .timer-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 56px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .timer-controls { display: flex; gap: 8px; justify-content: center; }
+  .btn {
+    background: var(--bg-card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .btn:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+  .btn-primary:hover { opacity: 0.85; color: var(--bg); }
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .pill-green { background: var(--green); color: var(--ink); }
+  .pill-yellow { background: var(--yellow); color: var(--bg); }
+  .pill-red { background: var(--red); color: var(--ink); }
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--ink-dim);
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">Método Imperatriz · Reunião Secreta</div>
+    <h1>Reunião de <em>Resultado</em></h1>
+    <p class="subtitle">O ritual gerencial que substitui reunião que não decide nada por reunião que faz dinheiro. Resultado é definido <strong>antes</strong>, não somado depois.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Negócio</div><div class="value">{{NEGOCIO}}</div></div>
+      <div class="meta-item"><div class="label">Frequência</div><div class="value">{{FREQUENCIA}}</div></div>
+      <div class="meta-item"><div class="label">Dia / Hora</div><div class="value">{{DIA_HORA}}</div></div>
+      <div class="meta-item"><div class="label">Duração</div><div class="value">{{DURACAO}}</div></div>
+      <div class="meta-item"><div class="label">Indicadores</div><div class="value">{{INDICADORES}}</div></div>
+      <div class="meta-item"><div class="label">1ª Reunião</div><div class="value">{{DATA_PRIMEIRA_REUNIAO}}</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab active" data-tab="diag">1 · Diagnóstico</button>
+    <button class="tab" data-tab="estr">2 · Estrutura</button>
+    <button class="tab" data-tab="core">3 · Core do Método</button>
+    <button class="tab" data-tab="cond">4 · Condução</button>
+    <button class="tab" data-tab="impl">5 · Implementação</button>
+    <button class="tab" data-tab="prim">6 · 1ª Reunião</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- BLOCO 1 — DIAGNÓSTICO -->
+<section class="panel active" id="diag">
+  <h2>Diagnóstico e Mentalidade</h2>
+  <p class="panel-intro">Os 7 sintomas que provam que sua reunião atual está te custando dinheiro. Marque os que aparecem hoje.</p>
+
+  <div class="card">
+    <h3>Os 7 Sintomas — Auto-diagnóstico</h3>
+    <div class="check"><input type="checkbox" id="s1"><label class="check-label" for="s1"><strong>1. A reunião dura mais de 60 minutos</strong>Sem agenda fixa, vira opinião e fofoca operacional.</label></div>
+    <div class="check"><input type="checkbox" id="s2"><label class="check-label" for="s2"><strong>2. Quem mais fala é o dono</strong>Reunião virou monólogo. O time aprende a calar.</label></div>
+    <div class="check"><input type="checkbox" id="s3"><label class="check-label" for="s3"><strong>3. Ninguém leva número escrito — só "achismo"</strong>"Acho que vendemos mais", "tá um pouco melhor", "deve ter subido".</label></div>
+    <div class="check"><input type="checkbox" id="s4"><label class="check-label" for="s4"><strong>4. As mesmas reclamações voltam toda semana</strong>Sem nunca virar ação rastreada.</label></div>
+    <div class="check"><input type="checkbox" id="s5"><label class="check-label" for="s5"><strong>5. Não existe ata, ou existe e ninguém lê</strong>Sem registro, todo mundo "esqueceu" o que combinou.</label></div>
+    <div class="check"><input type="checkbox" id="s6"><label class="check-label" for="s6"><strong>6. A reunião acaba sem decisão</strong>Ninguém sai com tarefa específica + prazo + responsável.</label></div>
+    <div class="check"><input type="checkbox" id="s7"><label class="check-label" for="s7"><strong>7. O time não acredita que algo vai mudar</strong>Equipe entra como obrigação social, não como ferramenta.</label></div>
+  </div>
+
+  <div class="score-box">
+    <div class="score-num" id="score-num">0/7</div>
+    <p id="score-msg">Marque os sintomas acima pra ver seu diagnóstico.</p>
+  </div>
+
+  <h3>Mentalidade — definidor vs. somador</h3>
+  <table>
+    <thead><tr><th>Modelo antigo (somador)</th><th>Modelo novo (definidor)</th></tr></thead>
+    <tbody>
+      <tr><td>Equipe trabalha → fim do mês alguém olha</td><td>Meta dividida em semanas → cada semana tem responsável</td></tr>
+      <tr><td>"Vamos ver no fim do mês quanto sobrou"</td><td>"Qual a meta dessa semana, e o que cada um precisa entregar?"</td></tr>
+      <tr><td>Problema aparece dia 30</td><td>Problema aparece dia 7 (e tem 3 semanas pra corrigir)</td></tr>
+      <tr><td>Ninguém é responsável pelo número</td><td>Cada número tem dono</td></tr>
+    </tbody>
+  </table>
+
+  <blockquote>"Você não escala o que você não mede toda semana."</blockquote>
+
+  <h3>O que você vai PARAR de fazer</h3>
+  <ul>
+    <li>Marcar reunião sem agenda escrita</li>
+    <li>Apresentar os números no lugar dos responsáveis</li>
+    <li>Aceitar "acho que" como dado</li>
+    <li>Discutir solução antes de entender causa raiz</li>
+    <li>Sair da reunião sem ata</li>
+    <li>Tolerar atraso como "tá ocupado"</li>
+    <li>Não ter consequência pra quem não entrega</li>
+  </ul>
+</section>
+
+<!-- BLOCO 2 — ESTRUTURA -->
+<section class="panel" id="estr">
+  <h2>A Estrutura</h2>
+  <p class="panel-intro">5 motores universais, escolha dos 2-3 que importam, agenda sagrada e checklist de 6 passos.</p>
+
+  <h3>Os 5 Motores Universais</h3>
+  <table>
+    <thead><tr><th>#</th><th>Motor</th><th>O que mede</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Volume de leads</strong></td><td>quantos contatos novos qualificados entram</td></tr>
+      <tr><td>2</td><td><strong>Taxa de conversão</strong></td><td>% de leads que viram cliente</td></tr>
+      <tr><td>3</td><td><strong>Ticket médio</strong></td><td>valor médio por cliente</td></tr>
+      <tr><td>4</td><td><strong>Frequência / Recorrência</strong></td><td>quantas vezes o cliente volta a comprar</td></tr>
+      <tr><td>5</td><td><strong>Custo (CAC + operacional)</strong></td><td>quanto custa fazer os motores 1-4 girar</td></tr>
+    </tbody>
+  </table>
+  <p>Faturamento bruto = M1 × M2 × M3 × M4. M5 entra como subtração. Escolha <strong>1 motor atacante + 1 defensor</strong>.</p>
+
+  <h3>A Agenda Sagrada — 4 atributos não-negociáveis</h3>
+  <div class="grid-2">
+    <div class="card card-gold"><h4>Frequência</h4><p>{{FREQUENCIA}} (padrão: semanal)</p></div>
+    <div class="card card-gold"><h4>Duração</h4><p>{{DURACAO}} com cronômetro</p></div>
+    <div class="card card-gold"><h4>Dia / Hora</h4><p>{{DIA_HORA}} (segunda/terça pela manhã)</p></div>
+    <div class="card card-gold"><h4>Quem participa</h4><p>{{PARTICIPANTES}} — apenas quem tem número</p></div>
+  </div>
+
+  <h3>Checklist Oficial — 6 Passos</h3>
+  <div class="card"><strong>Passo 1 (5 min) — Abertura da Ata</strong><p>Cada responsável diz "fiz / não fiz / parcial". Sem explicação ainda.</p></div>
+  <div class="card"><strong>Passo 2 (15 min) — Apresentação dos Números</strong><p>Cada um apresenta SEU indicador. Dono não apresenta. Time não comenta ainda.</p></div>
+  <div class="card"><strong>Passo 3 (15 min) — Diagnóstico FCA</strong><p>Pra cada meta fora: Fato → Causa raiz (5 porquês) → Ação.</p></div>
+  <div class="card"><strong>Passo 4 (15 min) — Plano de Ação</strong><p>Responsável único + prazo + critério de sucesso.</p></div>
+  <div class="card"><strong>Passo 5 (5 min) — Compromissos da próxima semana</strong><p>Cada um anuncia em voz alta. "Até [dia] eu entrego [resultado]".</p></div>
+  <div class="card"><strong>Passo 6 (5 min) — Fechamento</strong><p>Ler ata em voz alta. Confirmar com cada um. Mandar no grupo em 1h.</p></div>
+</section>
+
+<!-- BLOCO 3 — CORE -->
+<section class="panel" id="core">
+  <h2>O Core do Método</h2>
+  <p class="panel-intro">Ata, 3 visualizações obrigatórias, regra de ouro, FCA + 5 porquês, plano de ação.</p>
+
+  <div class="card card-gold">
+    <h3 style="margin-top:0">A Regra de Ouro</h3>
+    <blockquote style="margin:12px 0 0">Quem apresenta os números <strong>NUNCA</strong> é o dono.</blockquote>
+    <p style="margin-top:12px">Inegociável. Quem apresenta o número é responsável por ele. Sem isso, o dono vira espectador da própria empresa.</p>
+  </div>
+
+  <h3>As 3 Visualizações Obrigatórias</h3>
+  <div class="grid-2">
+    <div class="card"><h4>1. Gráfico do indicador — linha do tempo</h4><p>Eixo X: últimas 8-12 semanas. Eixo Y: o número. Linha extra: a meta. Mostra a tendência.</p></div>
+    <div class="card"><h4>2. Tabela real vs meta — por responsável</h4><p>Quem está bem fica em verde. Quem está fora vai pro FCA.</p></div>
+    <div class="card"><h4>3. Status dos compromissos anteriores</h4><p>Com ✅/❌ visíveis. Sem isso, perde-se a memória entre reuniões.</p></div>
+  </div>
+
+  <h3>Método FCA / UFCA</h3>
+  <table>
+    <tbody>
+      <tr><td><strong>F</strong> — Fato</td><td>O que aconteceu, com número exato. Sem opinião.</td></tr>
+      <tr><td><strong>C</strong> — Causa raiz</td><td>O PORQUÊ por trás do número. Aplicar 5 porquês.</td></tr>
+      <tr><td><strong>A</strong> — Ação</td><td>O que vai ser feito, com responsável e prazo.</td></tr>
+      <tr><td><strong>U</strong> — Urgência (UFCA)</td><td>O que muda se não resolver essa semana.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Técnica dos 5 Porquês — exemplo vivo</h3>
+  <div class="card">
+    <p><strong>Fato:</strong> conversão de webinar pra call caiu de 12% pra 9%</p>
+    <p><strong>Por quê?</strong> Menos gente está marcando call no botão final</p>
+    <p><strong>Por quê?</strong> Botão tá no fim e muita gente sai antes</p>
+    <p><strong>Por quê?</strong> Webinar tá durando 90 min, antes era 60</p>
+    <p><strong>Por quê?</strong> Adicionamos 3 cases novos no meio</p>
+    <p><strong>Por quê?</strong> Achamos que mais cases convencem mais — sem testar</p>
+    <p><strong>Causa raiz:</strong> pressuposto não testado.</p>
+    <p><strong>Ação:</strong> voltar pra 60 min, manter só os 2 cases originais.</p>
+  </div>
+</section>
+
+<!-- BLOCO 4 — CONDUÇÃO -->
+<section class="panel" id="cond">
+  <h2>A Condução</h2>
+  <p class="panel-intro">Como dar feedback sem destruir, cobrar sem ser tóxico, lidar com desculpa repetida e ativar o EFEITO BRIO.</p>
+
+  <h3>Fórmula F-D-A — Feedback</h3>
+  <table>
+    <thead><tr><th>Etapa</th><th>O que falar</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Fato</strong></td><td>Número específico, sem adjetivo. <em>"Conversão caiu de 12 pra 9"</em></td></tr>
+      <tr><td><strong>Desejo</strong></td><td>Onde queremos chegar e por quê. <em>"Precisamos voltar pra 12 porque sustenta o CAC"</em></td></tr>
+      <tr><td><strong>Ação</strong></td><td>Pergunta que devolve o problema. <em>"O que você acha que precisa fazer?"</em></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Cobrança — As 3 Camadas</h3>
+  <div class="card card-green"><strong>Camada 1 — Pergunta (1ª vez)</strong><p>"Vi que [compromisso] não saiu — o que aconteceu?"</p></div>
+  <div class="card card-gold"><strong>Camada 2 — Recompromisso (2ª vez)</strong><p>"Tudo bem, então até [novo prazo] você fecha. Combinado?"</p></div>
+  <div class="card card-red"><strong>Camada 3 — Conversa 1:1 fora da reunião (3ª vez)</strong><p>Tirar do grupo. Marcar 1:1 ainda no mesmo dia. Roteiro de 15 min: abertura, escuta, espelhamento, decisão (3 caminhos), encerramento por escrito.</p></div>
+
+  <h3>O EFEITO BRIO</h3>
+  <div class="card card-gold">
+    <p>O mecanismo que faz o método se cobrar sozinho. Aparece entre a 4ª e 8ª reunião.</p>
+    <p><strong>Sinais que está funcionando:</strong></p>
+    <ul>
+      <li>Time chega com status pronto, sem você pedir</li>
+      <li>Pessoas perguntam "qual a meta da próxima?" antes de você levantar</li>
+      <li>Quem tá atrasando avisa antes da reunião</li>
+      <li>Reunião acaba antes da hora porque tudo já foi decidido</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BLOCO 5 — IMPLEMENTAÇÃO -->
+<section class="panel" id="impl">
+  <h2>Implementação</h2>
+  <p class="panel-intro">Daily × Mensal, os 7 erros que arruínam, como engajar quem nunca fez, como manter sem você.</p>
+
+  <h3>Os 7 Erros — auto-auditoria</h3>
+  <p style="margin-bottom:16px;color:var(--ink-dim);font-size:13px">Marque o que acontece hoje. Audite a cada 4 semanas.</p>
+
+  <div class="check"><input type="checkbox" id="e1"><label class="check-label" for="e1"><strong>1. Marcar e remarcar</strong>Só remarca por feriado nacional ou óbito.</label></div>
+  <div class="check"><input type="checkbox" id="e2"><label class="check-label" for="e2"><strong>2. Aceitar "fiz quase"</strong>Na 2ª vez de "parcial", vira "não fiz".</label></div>
+  <div class="check"><input type="checkbox" id="e3"><label class="check-label" for="e3"><strong>3. O dono apresentar os números</strong>Inegociável. Cada indicador tem responsável único.</label></div>
+  <div class="check"><input type="checkbox" id="e4"><label class="check-label" for="e4"><strong>4. Reunião virar sessão de soluções da chefia</strong>Sempre devolver "o que VOCÊ acha?"</label></div>
+  <div class="check"><input type="checkbox" id="e5"><label class="check-label" for="e5"><strong>5. Não ter consequência pra quem não entrega</strong>Aplicar as 3 camadas. Se persistir, demitir.</label></div>
+  <div class="check"><input type="checkbox" id="e6"><label class="check-label" for="e6"><strong>6. Discutir solução sem entender causa raiz</strong>FCA + 5 porquês ANTES de qualquer plano.</label></div>
+  <div class="check"><input type="checkbox" id="e7"><label class="check-label" for="e7"><strong>7. Reunião sem ata enviada na hora</strong>Ata sai em 1h, no grupo.</label></div>
+
+  <h3>Daily × Mensal</h3>
+  <table>
+    <thead><tr><th>Frequência</th><th>Duração</th><th>Foco</th><th>Obrigatória?</th></tr></thead>
+    <tbody>
+      <tr><td>Diária</td><td>15 min</td><td>Ajuste de rota</td><td>Só em campanha</td></tr>
+      <tr><td><strong>Semanal</strong></td><td><strong>60 min</strong></td><td><strong>Resultado + decisão</strong></td><td><span class="pill pill-green">Sim — base</span></td></tr>
+      <tr><td>Mensal</td><td>90 min</td><td>Estratégia + nova meta</td><td>Recomendada</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Como manter sem o dono presente</h3>
+  <p>4 critérios pra reunião acontecer sem você:</p>
+  <ul>
+    <li>Existe condutor reserva treinado</li>
+    <li>Checklist visual acessível ao time</li>
+    <li>Ata template salva em local compartilhado</li>
+    <li>Dashboards/visualizações geradas automaticamente</li>
+  </ul>
+</section>
+
+<!-- BLOCO 6 — PRIMEIRA REUNIÃO -->
+<section class="panel" id="prim">
+  <h2>Sua Primeira Reunião</h2>
+  <p class="panel-intro">Comunicado pro grupo, roteiro frase por frase, cronômetro de 60 minutos.</p>
+
+  <h3>Cronômetro</h3>
+  <div class="timer">
+    <div class="timer-display" id="timer">60:00</div>
+    <div class="timer-controls">
+      <button class="btn btn-primary" id="timer-start">Iniciar</button>
+      <button class="btn" id="timer-pause">Pausar</button>
+      <button class="btn" id="timer-reset">Reset</button>
+    </div>
+  </div>
+
+  <h3>Comunicado pro grupo — copie e adapte</h3>
+  <div class="copy-block">
+    <button class="copy-btn" data-copy="comunicado">Copiar</button>
+    <pre id="comunicado">Pessoal,
+
+[ABERTURA — 1 linha conectando com situação concreta da semana]
+
+A partir de {{DATA_PRIMEIRA_REUNIAO}}, a gente passa a fazer uma reunião nova toda {{DIA_HORA}}, com duração de {{DURACAO}}. Vai chamar Reunião de Resultado.
+
+Quem participa: {{PARTICIPANTES}}.
+
+A diferença pra reunião de hoje é que cada um vai chegar com o número da própria área. Quem é responsável por X traz X. Não sou eu que apresento os números — é cada responsável.
+
+[POR QUE MUDA — 2-3 frases, sem ser sermão]
+
+Pra primeira reunião, peço que cada um chegue com:
+- O número da sua área da semana
+- Meta ou expectativa pra esse número
+- Uma frase do que tá indo bem e uma do que tá travando
+
+A gente vai aprender o ritual juntos. As primeiras 2-3 reuniões vão ser meio estranhas, é normal — depois vira automático.
+
+Qualquer dúvida, me chama no privado.</pre>
+  </div>
+
+  <h3>Roteiro frase-por-frase — abertura</h3>
+  <blockquote>Pessoal, hoje é a primeira Reunião de Resultado da gente. Antes de começar, deixa eu falar 3 coisas em 1 minuto. Primeiro: essa reunião dura 60 minutos. Vou usar cronômetro. Segundo: cada um aqui vai apresentar o próprio número — eu não vou apresentar. Terceiro: a gente sai daqui hoje com decisões registradas, prazo e responsável. Pode ser estranho na primeira vez, é normal. Bora?</blockquote>
+
+  <h3>Roteiro — passo 2 (apresentação)</h3>
+  <blockquote>{{NOME_1}}, começa por você. Qual é o número da sua área essa semana, qual era a expectativa, e o que você quer destacar?</blockquote>
+
+  <h3>Roteiro — passo 3 (FCA)</h3>
+  <blockquote>{{NOME}}, o seu número está em X vs meta de Y. Vamos entender: qual você acha que é a causa raiz disso? <em>(depois pergunta "por quê?" 3-4 vezes)</em></blockquote>
+
+  <h3>Roteiro — fechamento + compromisso público</h3>
+  <blockquote>Antes de sair: cada um aqui assumiu uma responsabilidade hoje. Quem aqui tem time abaixo? Sua tarefa pra próxima semana é marcar a SUA Reunião de Resultado com o seu time. Mesmo formato. Próxima reunião, primeiro item da pauta vai ser cada um aqui falando que dia/hora marcou a sua.</blockquote>
+</section>
+
+</main>
+
+<footer>
+  Reunião de Resultado · Método Imperatriz · {{NEGOCIO}}
+</footer>
+
+<script>
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }));
+
+  // Diagnóstico — score
+  const sintomas = [1,2,3,4,5,6,7].map(n => document.getElementById('s' + n));
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  function updateScore() {
+    const c = sintomas.filter(s => s.checked).length;
+    scoreNum.textContent = c + '/7';
+    if (c === 0) { scoreMsg.textContent = 'Marque os sintomas acima pra ver seu diagnóstico.'; }
+    else if (c <= 2) { scoreMsg.textContent = 'Reunião funciona razoavelmente. Aplicar a estrutura (aba 2) e o core (aba 3) já melhora drasticamente.'; }
+    else if (c <= 4) { scoreMsg.textContent = 'A reunião está te custando dinheiro. Refazer do zero seguindo os 6 blocos.'; }
+    else { scoreMsg.textContent = 'A reunião atual está SUBTRAINDO valor. Cancelar a próxima e refazer com o roteiro da aba 6.'; }
+  }
+  sintomas.forEach(s => s.addEventListener('change', updateScore));
+
+  // Copy
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.copy);
+      navigator.clipboard.writeText(target.textContent).then(() => {
+        btn.textContent = 'Copiado';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 1800);
+      });
+    });
+  });
+
+  // Cronômetro 60 min
+  let timerSec = 60 * 60;
+  let timerInt = null;
+  const timerDisp = document.getElementById('timer');
+  function fmt(s) {
+    const m = Math.floor(s/60);
+    const sec = s%60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+  function tick() {
+    if (timerSec > 0) { timerSec--; timerDisp.textContent = fmt(timerSec); }
+    else { clearInterval(timerInt); timerInt = null; timerDisp.style.color = 'var(--red)'; }
+  }
+  document.getElementById('timer-start').addEventListener('click', () => {
+    if (timerInt) return;
+    timerInt = setInterval(tick, 1000);
+  });
+  document.getElementById('timer-pause').addEventListener('click', () => {
+    if (timerInt) { clearInterval(timerInt); timerInt = null; }
+  });
+  document.getElementById('timer-reset').addEventListener('click', () => {
+    if (timerInt) { clearInterval(timerInt); timerInt = null; }
+    timerSec = 60*60;
+    timerDisp.textContent = fmt(timerSec);
+    timerDisp.style.color = 'var(--gold)';
+  });
+</script>
+
+</body>
+</html>
