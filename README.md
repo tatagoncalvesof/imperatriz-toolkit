@@ -1,45 +1,74 @@
 # Imperatriz Toolkit
 
-Toolkit proprietário da [Tata Goncalves](https://mentoriaimperioia.com) — **13 skills do Claude Code** que cobrem do briefing inicial até calendário editorial, passando por copy de alta conversão, análise de anúncio, visualização e estratégia de conteúdo multi-canal.
+Toolkit proprietário da [Tata Goncalves](https://mentoriaimperioia.com) — **71 skills do Claude Code** cobrindo todo o ecossistema da Mentoria Império IA: copy de alta conversão, criativos, funis, lançamentos, mentoria, dashboards, infra e estratégia.
 
-## O que vem dentro
+> Metodologia Imperatriz / Império IA — Schwartz + Bencivenga + Brunson + Hormozi + adaptação Brasil.
 
-### 🎯 Trio Mestre de Copy
+---
+
+## 🎯 Trio Mestre de Copy
+
 | Skill | O que faz |
 |---|---|
-| `briefing-copy-360` | Framework obrigatório pré-escrita — extrai 5 níveis hierárquicos antes de qualquer copy |
-| `mecanismo-unico` | 23 critérios (13 estruturais + 10 estratégicos) pra construir o Mecanismo Único |
-| `headline-imperatriz` | Schwartz + Bencivenga + adaptação Brasil — 6 temperaturas, 17 fórmulas, 3 modos |
+| `briefing-copy-360` | Framework obrigatório pré-escrita — 5 níveis hierárquicos antes de qualquer copy |
+| `mecanismo-unico` | 23 critérios pra construir o Mecanismo Único (Schwartz + Bencivenga) |
+| `headline-imperatriz` | 6 temperaturas, 17 fórmulas, 3 modos |
 
-### 🎨 Visual + Análise
-| Skill | O que faz |
-|---|---|
-| `texto-em-visual` | 18 tipos de visualização + briefing IA (Midjourney/Ideogram/Gemini) |
-| `analise-anuncio-1000` | 17 camadas de análise profunda de copy/VSL/anúncio |
-| `mapa-mental-imperatriz` | Mapas mentais visuais (Mermaid + Markmap + PNG + Obsidian Canvas), 8 modos |
+---
 
-### 📅 Estratégia de Conteúdo
-| Skill | O que faz |
-|---|---|
-| `maestro-de-conteudo` | Orquestrador único — uma skill, cinco fases, do zero ao calendário de 30 dias |
-| `linha-editorial-imperatriz` | Pilar Editorial — manifesto + pilares + matriz TEAM + cadência + vocabulário ON/OFF |
-| `calendario-imperatriz` | Calendário editorial 30+ peças em 6 canais sem canibalização |
-| `linkedin-empire` | Estratégia LinkedIn completa — perfil, 1.400 micro temas, 20 posts, 4 carousels, 2 newsletters |
-| `stories-pergunta-resposta` | 10 stories Q&A 9:16 com identidade fechada (carro/escritório) |
+## 📝 Copy / Persuasão / Páginas
 
-### 🔬 Pesquisa + Reunião
-| Skill | O que faz |
-|---|---|
-| `deep-market-research` | Pesquisa profunda PT-BR — voz literal do comprador em 5 plataformas, 50 termos + 150 objeções |
-| `reuniao-de-resultado` | Reunião Secreta — 6 blocos do método, 14 templates Obsidian + dashboard HTML |
+`skill-copy-builder` · `skill-copy-transformer` · `skill-oferta-irresistivel` · `skill-pitch-high-ticket` · `skill-sequencia-vendas` · `skill-sexy-canvas` · `voz-humana-br` · `skill-historia-metodo` · `skill-proposta-comercial` · `skill-pagina-vendas` · `skill-produto-entrada`
 
-**Trio mestre:** `mecanismo-unico` → `headline-imperatriz` → `texto-em-visual` (mecanismo vira headline vira visual).
+## 🔍 Pesquisa / Análise / Personas
+
+`deep-market-research` · `analise-anuncio-1000` · `skill-persona-profunda` · `glossariodatata`
+
+## 🎨 Visual / Mídia
+
+`texto-em-visual` · `mapa-mental-imperatriz` · `skill-tts-natural`
+
+## 📅 Estratégia de Conteúdo
+
+`maestro-de-conteudo` · `linha-editorial-imperatriz` · `calendario-imperatriz` · `linkedin-empire` · `stories-pergunta-resposta`
+
+## 📸 Criativos (Meta / Instagram)
+
+`skill-criativos-meta` · `criativos-mentorados` · `criativos-dor-beneficio` · `criativos-urgencia` · `criativos-qa-instagram` · `criativos-retargeting`
+
+## 🚀 Funis / Lançamentos / Tráfego
+
+`skill-funil-webinar` · `skill-lancamento-digital` · `skill-expert-secrets` · `skill-escala-ads` · `skill-relatorio-ads` · `maestro-trafego`
+
+## 👥 Mentoria / CRM / Dossiês
+
+`skill-mentoria-tata` · `skill-mentoria-imperio-ia` · `anamnese-mentorada` · `perfil-mentorada` · `dossie-mentorada` · `transcricao-mentoradas` · `hierarquia-imperatriz` · `raci-imperatriz` · `gates-imperatriz` · `evolucao-imperatriz` · `sucessao-imperatriz`
+
+## 💰 Vendas / Comercial
+
+`imperatriz-das-vendas` · `pricing-dinamico-imperatriz` · `cases-imperatriz`
+
+## 🏛️ Operação do Negócio Imperatriz
+
+`dashboard-imperatriz` · `marca-sistemica-imperatriz` · `produtos-imperatriz` · `crise-imperatriz` · `compliance-imperatriz` · `imperio-diagnostico` · `imperio-negocio` · `imperio-qualidade` · `imperio-infra` · `imperio-memoria` · `imperio-multi` · `imperio-agente`
+
+## ⚙️ Tech / Infra / Setup
+
+`skill-deploy-vps` · `skill-claude-md-builder` · `lara-builder` · `imperatriz-multiagentes`
+
+## 🎓 Consultores Especialistas
+
+`consultorialex` · `consultorrussel`
+
+## 🤝 Reuniões / Operacional
+
+`reuniao-de-resultado`
+
+---
 
 ## Instalação
 
 ### Mac / Linux
-
-Copia e cola no terminal:
 
 ```bash
 git clone https://github.com/tatagoncalvesof/imperatriz-toolkit ~/imperatriz-toolkit && cd ~/imperatriz-toolkit && bash install.sh
@@ -53,44 +82,31 @@ cd $HOME\imperatriz-toolkit
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-### Instalação manual (qualquer sistema)
-
-Se preferir copiar à mão:
+### Manual (qualquer sistema)
 
 ```bash
 git clone https://github.com/tatagoncalvesof/imperatriz-toolkit
 cp -R imperatriz-toolkit/skills/* ~/.claude/skills/
 ```
 
-No Windows:
-```powershell
-git clone https://github.com/tatagoncalvesof/imperatriz-toolkit
-Copy-Item -Path imperatriz-toolkit\skills\* -Destination $HOME\.claude\skills\ -Recurse
-```
+---
 
 ## Uso
 
-Abre o Claude Code em qualquer projeto e roda qualquer uma das skills:
+Abre o Claude Code em qualquer projeto. Cada skill vira um slash command:
 
 ```
 /briefing-copy-360
 /mecanismo-unico
 /headline-imperatriz
-/texto-em-visual
-/analise-anuncio-1000
-/stories-pergunta-resposta
-/mapa-mental-imperatriz
-/maestro-de-conteudo
-/linha-editorial-imperatriz
-/calendario-imperatriz
-/linkedin-empire
-/deep-market-research
-/reuniao-de-resultado
+... (mais 68)
 ```
 
-## Atualização
+A lista completa aparece quando você digita `/` no Claude Code.
 
-Pra pegar as últimas versões das skills:
+---
+
+## Atualização
 
 ```bash
 cd ~/imperatriz-toolkit
@@ -98,44 +114,49 @@ git pull
 bash install.sh    # ou .\install.ps1 no Windows
 ```
 
+---
+
 ## Pré-requisitos
 
 - [Claude Code](https://claude.com/claude-code) instalado (`claude` no terminal)
-- `git` instalado
-- Algumas skills usam Python 3 e ferramentas externas (Midjourney, Ideogram, Gemini) — leia o `SKILL.md` de cada uma
+- `git`
+- Algumas skills usam Python 3, FFmpeg, Remotion ou ferramentas externas (Midjourney, Ideogram, Gemini) — leia o `SKILL.md` de cada uma
 
-## Fluxo recomendado por contexto
+---
 
-### Pra escrever copy (página de vendas, VSL, e-mail, anúncio)
+## Fluxos recomendados
+
+**Pra escrever copy:**
 ```
-1. /briefing-copy-360         (extrai contexto)
-2. /deep-market-research      (captura voz literal do comprador)
-3. /mecanismo-unico           (constrói o mecanismo)
-4. /headline-imperatriz       (gera headlines)
-5. /texto-em-visual           (transforma em visual)
-6. /analise-anuncio-1000      (revisa contra 17 camadas)
+/briefing-copy-360 → /deep-market-research → /mecanismo-unico → /headline-imperatriz → /texto-em-visual → /analise-anuncio-1000
 ```
 
-### Pra montar estratégia de conteúdo do zero
+**Pra montar estratégia de conteúdo do zero:**
 ```
-/maestro-de-conteudo  (orquestra tudo em 5 fases)
-       ↓
-/linha-editorial-imperatriz → /calendario-imperatriz
-       ↓
-/linkedin-empire + /stories-pergunta-resposta + /skill-carrossel-instagram*
+/maestro-de-conteudo  (orquestra 5 fases automaticamente)
 ```
 
-### Pra rodar reunião de resultado da empresa
+**Pra rodar reunião de resultado:**
 ```
 /reuniao-de-resultado
 ```
 
-### Pra organizar ideias / estruturar mentalmente
+**Pra estruturar mentalmente / organizar ideias:**
 ```
 /mapa-mental-imperatriz
 ```
 
-\* algumas skills não vêm no toolkit ainda, são instaladas separado.
+**Pra lançar produto:**
+```
+/skill-lancamento-digital → /skill-expert-secrets → /skill-funil-webinar → /skill-pagina-vendas → /skill-criativos-meta
+```
+
+**Pra mentorar / acompanhar mentoradas:**
+```
+/anamnese-mentorada → /perfil-mentorada → /dossie-mentorada → /skill-mentoria-tata
+```
+
+---
 
 ## Licença
 

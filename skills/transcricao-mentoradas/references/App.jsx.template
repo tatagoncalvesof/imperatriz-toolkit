@@ -1,0 +1,426 @@
+// ISAURA Platform Template v3.0 — Netflix-style lesson hub
+// IMPORTANT: Use this EXACT code. Only change: resources.js data, brand colors in CSS/tailwind.
+// DO NOT simplify, rearrange, or "improve" this layout. It is battle-tested.
+
+import { useState, useEffect } from 'react'
+import './index.css'
+import { imersaoData } from './resources.js'
+
+const contentCache = {}
+async function loadBlockContent(dataFile) {
+  if (contentCache[dataFile]) return contentCache[dataFile]
+  try {
+    const mod = await import(`./content/${dataFile}.json`)
+    contentCache[dataFile] = mod.default
+    return mod.default
+  } catch { return null }
+}
+
+// Build flat navigation list
+const allBlocks = imersaoData.days.flatMap(d =>
+  d.blocos.map(b => ({ dayId: d.id, dayLabel: d.label, dayDate: d.date, ...b }))
+)
+
+// ─── COMPONENTS ────────────────────────────────────────────
+
+function YouTubeEmbed({ videoId }) {
+  return (
+    <div className="relative w-full pb-[56.25%] rounded-2xl overflow-hidden bg-slate-900 shadow-lg">
+      <iframe className="absolute inset-0 w-full h-full" src={`https://www.youtube.com/embed/${videoId}`}
+        title="Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+    </div>
+  )
+}
+
+function BlockNav({ currentIdx, onNavigate, onBack }) {
+  const prev = currentIdx > 0 ? allBlocks[currentIdx - 1] : null
+  const next = currentIdx < allBlocks.length - 1 ? allBlocks[currentIdx + 1] : null
+  return (
+    <div className="flex items-center gap-2">
+      {prev && (
+        <button onClick={() => onNavigate(prev.dayId, prev.id)}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-brand-50 hover:border-brand-300 hover:text-brand-700 transition-all">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+          Anterior
+        </button>
+      )}
+      <button onClick={onBack}
+        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-brand-600 transition-colors">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+        Todas as Aulas
+      </button>
+      {next && (
+        <button onClick={() => onNavigate(next.dayId, next.id)}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-brand-50 hover:border-brand-300 hover:text-brand-700 transition-all">
+          Proximo
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+        </button>
+      )}
+    </div>
+  )
+}
+
+function StepItem({ step, index, checked, onToggle }) {
+  return (
+    <div className={`flex items-start gap-3 p-4 rounded-xl border transition-all ${checked ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}>
+      <button onClick={onToggle} className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${checked ? 'bg-emerald-500 border-emerald-500 text-white scale-110' : 'border-slate-300 hover:border-brand-400'}`}>
+        {checked && <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+      </button>
+      <div className="flex-1 min-w-0">
+        <p className={`text-sm leading-relaxed ${checked ? 'text-emerald-700 line-through' : 'text-slate-700'}`}>
+          <span className="font-semibold text-brand-500 mr-1.5">{index}.</span>{step.text}
+        </p>
+        {step.link && (
+          <a href={step.link} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            {step.linkLabel || 'Abrir'}
+          </a>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function WorkbookSection({ data, blockKey }) {
+  const [values, setValues] = useState(() => { try { return JSON.parse(localStorage.getItem(`wb-${blockKey}`) || '{}') } catch { return {} } })
+  const [openMod, setOpenMod] = useState(0)
+  const set = (k, v) => { const next = { ...values, [k]: v }; setValues(next); localStorage.setItem(`wb-${blockKey}`, JSON.stringify(next)) }
+
+  return (
+    <div className="space-y-3">
+      {data.modules.map((mod, mi) => (
+        <div key={mi} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <button onClick={() => setOpenMod(openMod === mi ? -1 : mi)} className="w-full text-left p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+            <span className="font-semibold text-sm text-slate-800">{mod.title}</span>
+            <svg className={`w-4 h-4 text-slate-400 transition-transform ${openMod === mi ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          {openMod === mi && (
+            <div className="px-4 pb-4 space-y-4 border-t border-slate-100 pt-3 animate-fade-in">
+              <p className="text-sm text-slate-600 leading-relaxed">{mod.concept}</p>
+              {mod.exercises.map((ex, ei) => (
+                <div key={ei}><p className="text-xs text-slate-500 mb-1">Exercicio {ei + 1}: {ex.prompt.replace('___BLANK___', '______')}</p>
+                  <input type="text" value={values[`${mi}-ex-${ei}`] || ''} onChange={e => set(`${mi}-ex-${ei}`, e.target.value)} placeholder="Sua resposta..."
+                    className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none" />
+                </div>
+              ))}
+              <div><p className="text-xs font-medium text-brand-600 mb-1">Reflexao: {mod.reflection}</p>
+                <textarea value={values[`${mi}-ref`] || ''} onChange={e => set(`${mi}-ref`, e.target.value)} placeholder="Escreva..." rows={2}
+                  className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none resize-y" />
+              </div>
+              <div className="bg-brand-50 p-4 rounded-xl"><p className="text-xs font-medium text-brand-700 mb-1">Aplique no Seu Negocio</p>
+                <p className="text-sm text-brand-800">{mod.action}</p>
+                <textarea value={values[`${mi}-act`] || ''} onChange={e => set(`${mi}-act`, e.target.value)} placeholder="Como vou aplicar..." rows={2}
+                  className="w-full mt-2 px-3 py-2.5 border border-brand-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none resize-y bg-white" />
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ChecklistSection({ data, blockKey }) {
+  const [checked, setChecked] = useState(() => { try { return JSON.parse(localStorage.getItem(`cl-${blockKey}`) || '{}') } catch { return {} } })
+  const toggle = (k) => { const next = { ...checked, [k]: !checked[k] }; setChecked(next); localStorage.setItem(`cl-${blockKey}`, JSON.stringify(next)) }
+  const total = data.categories.reduce((a, c) => a + c.items.length, 0)
+  const done = Object.values(checked).filter(Boolean).length
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between"><span className="text-xs text-slate-400">{done}/{total} completos</span></div>
+      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden"><div className={`h-full rounded-full transition-all ${done === total && total > 0 ? 'bg-emerald-500' : 'bg-brand-500'}`} style={{ width: `${total ? (done / total) * 100 : 0}%` }} /></div>
+      {data.categories.map((cat, ci) => (
+        <div key={ci} className={`rounded-xl border overflow-hidden ${cat.type === 'quick' ? 'border-emerald-200 bg-emerald-50/50' : 'border-slate-200 bg-white'}`}>
+          <div className="p-3 flex items-center gap-2"><h4 className="font-semibold text-sm text-slate-800">{cat.name}</h4>
+            {cat.type === 'quick' && <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded">RAPIDO</span>}
+          </div>
+          <div className="px-3 pb-3 space-y-2">{cat.items.map((item, ii) => {
+            const k = `${ci}-${ii}`
+            return (
+              <div key={ii} className={`flex items-start gap-3 p-3 rounded-lg border transition-all ${checked[k] ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-100'}`}>
+                <button onClick={() => toggle(k)} className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${checked[k] ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300'}`}>
+                  {checked[k] && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                </button>
+                <div className="flex-1"><p className={`text-sm ${checked[k] ? 'text-emerald-700 line-through' : 'text-slate-700'}`}>{item.text}</p><p className="text-xs text-slate-400 mt-0.5">{item.result}</p></div>
+              </div>
+            )
+          })}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ResumoSection({ data }) {
+  const [openInsight, setOpenInsight] = useState(0)
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-r from-brand-50 to-brand-100/50 border-l-4 border-brand-500 rounded-r-xl p-5">
+        <p className="text-xs font-bold text-brand-600 uppercase tracking-wider mb-2">Resumo</p>
+        <p className="text-sm text-brand-900 leading-relaxed">{data.tldr}</p>
+      </div>
+      {data.insights.map((ins, i) => (
+        <div key={i} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <button onClick={() => setOpenInsight(openInsight === i ? -1 : i)} className="w-full text-left p-4 flex items-center gap-3 hover:bg-slate-50">
+            <span className="w-7 h-7 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0">{i + 1}</span>
+            <span className="font-medium text-sm text-slate-800 flex-1">{ins.title}</span>
+            <svg className={`w-4 h-4 text-slate-400 transition-transform ${openInsight === i ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          {openInsight === i && <div className="px-4 pb-4 border-t border-slate-100 pt-3"><p className="text-sm text-slate-600 leading-relaxed">{ins.text}</p></div>}
+        </div>
+      ))}
+      {data.quotes?.length > 0 && data.quotes.map((q, i) => (
+        <blockquote key={i} className="border-l-4 border-brand-400 bg-brand-50 rounded-r-xl p-4">
+          <p className="text-sm text-brand-900 italic leading-relaxed">"{q.text}"</p>
+          <p className="text-xs text-brand-500 mt-1.5">{q.context}</p>
+        </blockquote>
+      ))}
+    </div>
+  )
+}
+
+// ─── BLOCK PAGE (opened lesson) ─────────────────────────────
+
+function BlockPage({ dayId, bloco, onBack, onNavigate }) {
+  const [content, setContent] = useState(null)
+  const [activeTab, setActiveTab] = useState('passos')
+  const blockKey = `d${dayId}b${bloco.id}`
+  const currentIdx = allBlocks.findIndex(b => b.dayId === dayId && b.id === bloco.id)
+  const [stepChecked, setStepChecked] = useState(() => { try { return JSON.parse(localStorage.getItem(`steps-${blockKey}`) || '{}') } catch { return {} } })
+
+  useEffect(() => { loadBlockContent(bloco.dataFile).then(setContent); window.scrollTo(0, 0) }, [bloco.dataFile])
+
+  const toggleStep = (i) => { const next = { ...stepChecked, [i]: !stepChecked[i] }; setStepChecked(next); localStorage.setItem(`steps-${blockKey}`, JSON.stringify(next)) }
+
+  const tabs = [
+    { id: 'passos', label: 'Passo a Passo' },
+    { id: 'workbook', label: 'Workbook' },
+    { id: 'checklist', label: 'Checklist' },
+    { id: 'resumo', label: 'Resumo' },
+  ]
+
+  const prev = currentIdx > 0 ? allBlocks[currentIdx - 1] : null
+  const next = currentIdx < allBlocks.length - 1 ? allBlocks[currentIdx + 1] : null
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Sticky top nav */}
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          <BlockNav currentIdx={currentIdx} onNavigate={onNavigate} onBack={onBack} />
+          <div className="flex items-center gap-2">
+            <a href={`/materiais/${bloco.dataFile}.pdf`} download
+              className="inline-flex items-center gap-1.5 text-xs font-medium bg-brand text-white px-3.5 py-2 rounded-lg hover:opacity-90 transition-colors">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+              PDF
+            </a>
+            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">{currentIdx + 1}/{allBlocks.length}</span>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 animate-fade-in">
+        {/* Title */}
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800 leading-tight">{bloco.title}</h1>
+          <p className="text-sm text-slate-500 mt-1">{bloco.subtitle} — {bloco.duration}</p>
+        </div>
+
+        {/* Video */}
+        <YouTubeEmbed videoId={bloco.youtubeId} />
+
+        {/* Pill tabs */}
+        <div className="flex gap-1.5 bg-slate-100 rounded-xl p-1.5">
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setActiveTab(t.id)}
+              className={`flex-1 px-3 py-2.5 text-xs font-semibold rounded-lg transition-all ${
+                activeTab === t.id ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+              }`}>{t.label}</button>
+          ))}
+        </div>
+
+        {/* Content */}
+        <div className="min-h-[300px]">
+          {activeTab === 'passos' && (
+            <div className="space-y-3">
+              {bloco.steps.map((s, i) => (
+                <StepItem key={i} step={s} index={i + 1} checked={stepChecked[i]} onToggle={() => toggleStep(i)} />
+              ))}
+              {bloco.resources?.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {bloco.resources.map((r, i) => (
+                    <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 hover:border-brand-300 hover:text-brand-600 hover:bg-brand-50 transition-all shadow-sm">
+                      {r.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {activeTab === 'workbook' && content?.workbook && <WorkbookSection data={content.workbook} blockKey={blockKey} />}
+          {activeTab === 'checklist' && content?.checklist && <ChecklistSection data={content.checklist} blockKey={blockKey} />}
+          {activeTab === 'resumo' && content?.resumo && <ResumoSection data={content.resumo} />}
+          {activeTab !== 'passos' && !content && <div className="text-center py-16 text-slate-400 text-sm">Carregando materiais...</div>}
+        </div>
+
+        {/* Bottom nav (large cards) */}
+        <div className="flex items-stretch gap-4 pt-6 border-t border-slate-200">
+          {prev ? (
+            <button onClick={() => onNavigate(prev.dayId, prev.id)}
+              className="flex-1 flex items-center gap-4 p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-brand-300 hover:shadow-md transition-all text-left group">
+              <svg className="w-6 h-6 text-slate-300 group-hover:text-brand-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+              <div className="min-w-0"><div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Anterior</div>
+                <div className="text-sm font-semibold text-slate-700 truncate mt-0.5 group-hover:text-brand-700 transition-colors">{prev.title}</div>
+                <div className="text-xs text-slate-400 mt-0.5">{prev.dayLabel} — {prev.duration}</div>
+              </div>
+            </button>
+          ) : <div className="flex-1" />}
+          {next ? (
+            <button onClick={() => onNavigate(next.dayId, next.id)}
+              className="flex-1 flex items-center justify-end gap-4 p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-brand-300 hover:shadow-md transition-all text-right group">
+              <div className="min-w-0"><div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Proximo</div>
+                <div className="text-sm font-semibold text-slate-700 truncate mt-0.5 group-hover:text-brand-700 transition-colors">{next.title}</div>
+                <div className="text-xs text-slate-400 mt-0.5">{next.dayLabel} — {next.duration}</div>
+              </div>
+              <svg className="w-6 h-6 text-slate-300 group-hover:text-brand-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </button>
+          ) : <div className="flex-1" />}
+        </div>
+      </main>
+    </div>
+  )
+}
+
+// ─── HUB PAGE ──────────────────────────────────────────────
+
+function HubPage() {
+  const [activeDay, setActiveDay] = useState(1)
+  const [selectedBlock, setSelectedBlock] = useState(null)
+
+  const navigate = (dayId, blocoId) => { setSelectedBlock({ dayId, blocoId }); setActiveDay(dayId) }
+
+  if (selectedBlock) {
+    const day = imersaoData.days.find(d => d.id === selectedBlock.dayId)
+    const bloco = day.blocos.find(b => b.id === selectedBlock.blocoId)
+    return <BlockPage dayId={day.id} bloco={bloco} onBack={() => setSelectedBlock(null)} onNavigate={navigate} />
+  }
+
+  const currentDay = imersaoData.days.find(d => d.id === activeDay)
+
+  // Calculate aula number offset based on previous days
+  const aulaOffset = imersaoData.days
+    .filter(d => d.id < activeDay)
+    .reduce((sum, d) => sum + d.blocos.length, 0)
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero with background image */}
+      <header className="relative overflow-hidden">
+        <img src="/thumbs/hero-imersao.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40" />
+        <div className="relative max-w-5xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 text-white">
+          <span className="inline-flex items-center gap-2 text-xs font-medium text-brand-300 bg-brand-500/20 px-3 py-1.5 rounded-full border border-brand-500/30 mb-4">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            {imersaoData.dates}
+          </span>
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">{imersaoData.title}</h1>
+          <p className="text-slate-300 mt-3 text-sm md:text-lg max-w-xl">{imersaoData.subtitle} — {imersaoData.days.length} dias de imersao, {allBlocks.length} aulas praticas</p>
+          <div className="flex gap-8 mt-8">
+            {[
+              { v: allBlocks.length.toString(), l: 'Aulas' },
+              { v: `~${Math.round(allBlocks.reduce((s, b) => s + parseInt(b.duration) || 0, 0) / 60)}h`, l: 'de Conteudo' },
+              { v: allBlocks.length.toString(), l: 'PDFs' },
+              { v: imersaoData.days.length.toString(), l: imersaoData.days.length === 1 ? 'Dia' : 'Dias' },
+            ].map((s, i) => (
+              <div key={i}><div className="text-2xl font-bold text-white">{s.v}</div><div className="text-xs text-slate-400">{s.l}</div></div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
+        {/* Day tabs — only show if multi-day */}
+        {imersaoData.days.length > 1 && (
+          <div className="flex gap-3">
+            {imersaoData.days.map(d => (
+              <button key={d.id} onClick={() => setActiveDay(d.id)}
+                className={`flex-1 p-5 rounded-2xl border-2 transition-all text-left ${
+                  activeDay === d.id ? 'border-brand-500 bg-brand-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'
+                }`}>
+                <div className={`text-lg font-bold ${activeDay === d.id ? 'text-brand-700' : 'text-slate-800'}`}>{d.label}</div>
+                <p className="text-xs text-slate-500 mt-0.5">{d.date}</p>
+                <p className="text-sm text-slate-600 mt-2">{d.description}</p>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Tutorial banner - before Day 1 */}
+        {activeDay === 1 && imersaoData.tutorialUrl && (
+          <a href={imersaoData.tutorialUrl} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-4 p-5 bg-gradient-to-r from-amber-50 to-amber-100/50 border-2 border-amber-200 rounded-2xl hover:border-amber-300 hover:shadow-md transition-all group">
+            <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-amber-700 bg-amber-200 px-2 py-0.5 rounded-full">FACA ANTES DE COMECAR</span>
+              </div>
+              <h3 className="font-bold text-amber-900 text-base mt-1">Tutorial Guiado — Prepare Seu Ambiente</h3>
+              <p className="text-xs text-amber-700 mt-0.5">Instale tudo que voce vai precisar. Leva ~15 minutos.</p>
+            </div>
+            <svg className="w-5 h-5 text-amber-400 group-hover:text-amber-600 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+          </a>
+        )}
+
+        {/* Lesson cards - Netflix style with thumbnails */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {currentDay.blocos.map((bloco, i) => {
+            const aulaNum = aulaOffset + bloco.id
+            return (
+              <button key={bloco.id} onClick={() => navigate(activeDay, bloco.id)}
+                className="group text-left bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-xl hover:border-brand-200 hover:-translate-y-1 transition-all duration-300">
+                {/* Thumbnail */}
+                <div className="relative aspect-video overflow-hidden bg-slate-100">
+                  <img src={`/thumbs/aula-${String(aulaNum).padStart(2, '0')}.png`} alt={bloco.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Play button overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                      <svg className="w-6 h-6 text-brand-600 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    </div>
+                  </div>
+                  {/* Duration badge */}
+                  <span className="absolute bottom-3 right-3 text-[11px] font-semibold text-white bg-black/70 px-2 py-0.5 rounded-md">{bloco.duration}</span>
+                  {/* Aula number badge */}
+                  <span className="absolute top-3 left-3 text-[10px] font-bold text-white bg-brand px-2 py-0.5 rounded-md">AULA {aulaNum}</span>
+                </div>
+                {/* Info */}
+                <div className="p-4">
+                  <h3 className="font-bold text-slate-800 text-[15px] leading-snug group-hover:text-brand-700 transition-colors">{bloco.title}</h3>
+                  <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">{bloco.subtitle}</p>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </main>
+
+      <footer className="border-t border-slate-200 mt-8">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8 py-6 text-center">
+          <p className="text-xs text-slate-400">Material complementar exclusivo para alunos</p>
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+// ─── APP ───────────────────────────────────────────────────
+
+export default function App() {
+  return <HubPage />
+}

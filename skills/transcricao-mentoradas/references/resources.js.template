@@ -1,0 +1,39 @@
+// ISAURA — resources.js template
+// Replace ALL values below with actual data from transcriptions.
+// NAMING RULES: titles must be PROMISE-BASED, not technical.
+// BAD: "CLAUDE.md Builder", "Persona Profunda"
+// GOOD: "Ensine a IA Quem Voce E", "Descubra Seu Cliente Ideal"
+
+export const imersaoData = {
+  title: "__IMMERSION_TITLE__",
+  subtitle: "__SUBTITLE__",
+  dates: "__DATES__",
+  tutorialUrl: "__TUTORIAL_URL_OR_NULL__", // set to null if no tutorial
+  days: [
+    {
+      id: 1,
+      label: "Dia 01",
+      date: "__DAY1_DATE__",
+      description: "__DAY1_DESCRIPTION__",
+      blocos: [
+        {
+          id: 1,
+          title: "__PROMISE_TITLE__",
+          subtitle: "__SUBTITLE__",
+          duration: "__DURATION__",
+          youtubeId: "__YOUTUBE_ID__",
+          dataFile: "dia1-bloco01",
+          steps: [
+            { text: "__STEP_TEXT__" },
+            { text: "__STEP_WITH_LINK__", link: "__URL__", linkLabel: "__LABEL__" },
+          ],
+          resources: [
+            { label: "__RESOURCE_LABEL__", url: "__URL__", type: "drive" },
+          ]
+        },
+        // ... more blocos
+      ]
+    },
+    // ... more days (if multi-day immersion)
+  ]
+}
